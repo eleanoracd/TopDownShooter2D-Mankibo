@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemyLogic : MonoBehaviour
 {
     [SerializeField] private float enemySpeed = 2f;
-    [SerializeField] private int enemyDamage = 1;
+    [SerializeField] private float enemyHealth = 1f;
+    [SerializeField] private float enemyDamage = 5f;
 
     private Transform target;
     private Rigidbody2D rb;
@@ -17,22 +18,22 @@ public class EnemyLogic : MonoBehaviour
 
     private void Start()
     {
-        PlayerLogic player = FindObjectOfType<PlayerLogic>();
-        if (player != null)
+       TowerLogic tower = FindObjectOfType<TowerLogic>();
+        if (tower != null)
         {
-            target = player.transform;
+            target = tower.transform;
         } else
         {
-            Debug.LogError("No PlayerLogic component found!");
+            Debug.LogError("NoTowerLogic component found!");
         }
     }
 
     private void Update()
     {
-        PursuePlayer();
+        Pursuetower();
     }
 
-    private void PursuePlayer()
+    private void Pursuetower()
     {
         if (target == null) return;
 
@@ -45,12 +46,28 @@ public class EnemyLogic : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        PlayerLogic player = collision.gameObject.GetComponent<PlayerLogic>();
-        if (player != null)
+        if (collision.gameObject.GetComponent<EnemyLogic>() != null)
         {
-            Debug.Log("Player takes damage: " + enemyDamage);
+            // Resolve overlap without destroying the enemy
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+            return;
         }
 
-        Destroy(gameObject);
+       TowerLogic tower = collision.gameObject.GetComponent<TowerLogic>();
+        if (tower != null)
+        {
+            tower.TakeDamage(enemyDamage);
+            Destroy(gameObject);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        enemyHealth -= damage;
+
+        if (enemyHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

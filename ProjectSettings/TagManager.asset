@@ -13,8 +13,8 @@ TagManager:
   - UI
   - Ground
   - Enemy
+  - Tower
   - Player
-  - 
   - 
   - 
   - 
@@ -40,4 +40,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 4143535023
+    locked: 0
+  - name: Enemies
+    uniqueID: 1600003359
+    locked: 0
+  - name: Bullet
+    uniqueID: 454341347
+    locked: 0
+  - name: Tower
+    uniqueID: 3760953485
+    locked: 0
+  - name: Player
+    uniqueID: 2067194939
     locked: 0
