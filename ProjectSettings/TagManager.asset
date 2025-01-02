@@ -15,7 +15,7 @@ TagManager:
   - Enemy
   - Tower
   - Player
-  - 
+  - Bullet
   - 
   - 
   - 
@@ -47,12 +47,12 @@ TagManager:
   - name: Enemies
     uniqueID: 1600003359
     locked: 0
-  - name: Bullet
-    uniqueID: 454341347
-    locked: 0
   - name: Tower
     uniqueID: 3760953485
     locked: 0
   - name: Player
     uniqueID: 2067194939
+    locked: 0
+  - name: Bullet
+    uniqueID: 454341347
     locked: 0

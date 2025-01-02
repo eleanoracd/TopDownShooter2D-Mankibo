@@ -10,17 +10,17 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float waveDuration = 120f;
 
     private bool isSpawning = true;
+    private float waveEndTime;
 
     private void Start()
     {
+        waveEndTime = Time.time + waveDuration;
         StartCoroutine(WaveSpawner());
     }
 
     private IEnumerator WaveSpawner()
     {
-        float endTime = Time.time + waveDuration;
-
-        while (Time.time < endTime)
+        while (Time.time < waveEndTime)
         {
             if (isSpawning)
             {
@@ -35,15 +35,47 @@ public class SpawnManager : MonoBehaviour
 
     private void SpawnEnemyAtRandomPoint()
     {
-        if (spawnPoints.Count == 0)
+        if (spawnPoints == null || spawnPoints.Count == 0)
         {
             Debug.LogError("No Spawn points assigned!");
+            return;
+        }
+
+        
+        spawnPoints.RemoveAll(spawnPoint => spawnPoint == null);
+
+        if (spawnPoints.Count == 0)
+        {
+            Debug.LogError("All spawn points have been destroyed!");
             return;
         }
 
         int randomIndex = Random.Range(0, spawnPoints.Count);
         Transform spawnPoint = spawnPoints[randomIndex];
 
-        Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        if (spawnPoint != null)
+        {
+            Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("Selected spawn point is null. Skipping spawn.");
+        }
+    }
+
+    public bool IsWaveOver()
+    {
+        return Time.time >= waveEndTime;
+    }
+
+    public float GetWaveTimeRemaining()
+    {
+        return Mathf.Max(0, waveEndTime - Time.time);
+    }
+
+    private void OnDestroy()
+    {
+        
+        StopAllCoroutines();
     }
 }

@@ -18,22 +18,22 @@ public class EnemyLogic : MonoBehaviour
 
     private void Start()
     {
-       TowerLogic tower = FindObjectOfType<TowerLogic>();
-        if (tower != null)
+       PlayerLogic player = FindObjectOfType<PlayerLogic>();
+        if (player != null)
         {
-            target = tower.transform;
+            target = player.transform;
         } else
         {
-            Debug.LogError("NoTowerLogic component found!");
+            Debug.LogError("NoPlayerLogic component found!");
         }
     }
 
     private void Update()
     {
-        Pursuetower();
+        Pursueplayer();
     }
 
-    private void Pursuetower()
+    private void Pursueplayer()
     {
         if (target == null) return;
 
@@ -53,10 +53,10 @@ public class EnemyLogic : MonoBehaviour
             return;
         }
 
-       TowerLogic tower = collision.gameObject.GetComponent<TowerLogic>();
-        if (tower != null)
+       PlayerLogic player = collision.gameObject.GetComponent<PlayerLogic>();
+        if (player != null)
         {
-            tower.TakeDamage(enemyDamage);
+            player.TakeDamage(enemyDamage);
             Destroy(gameObject);
         }
     }

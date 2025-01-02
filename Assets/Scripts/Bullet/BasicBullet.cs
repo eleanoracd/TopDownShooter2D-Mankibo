@@ -4,13 +4,15 @@ public class BasicBullet : BaseBullet
 {
     [SerializeField] private float bulletSpeed = 10f;
     [SerializeField] private float maxDistance = 50f;
+    [SerializeField] private float bulletDamage = 10f;
+    [SerializeField] private float bulletCooldown = .25f;
 
     private Vector3 spawnPoint;
 
     private void Awake()
     {
-        Damage = 10f;
-        Cooldown = 0.25f;
+        Damage = bulletDamage;
+        Cooldown = bulletCooldown;
     }
 
     public override void Initialize(Vector3 spawnPosition, Vector3 direction)
@@ -34,7 +36,8 @@ public class BasicBullet : BaseBullet
         if (enemy != null)
         {
             enemy.TakeDamage(Damage);
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+        
     }
 }

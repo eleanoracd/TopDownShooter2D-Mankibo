@@ -80,15 +80,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""SwitchBullet5"",
-                    ""type"": ""Button"",
-                    ""id"": ""508ea89f-5af8-4c34-aced-41ca16f06ba1"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -157,17 +148,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""SwitchBullet4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7ea7d0d3-06bc-40b0-aed2-272c1dae7aa1"",
-                    ""path"": ""<Keyboard>/5"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SwitchBullet5"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -182,7 +162,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_SwitchBullet2 = m_Player.FindAction("SwitchBullet2", throwIfNotFound: true);
         m_Player_SwitchBullet3 = m_Player.FindAction("SwitchBullet3", throwIfNotFound: true);
         m_Player_SwitchBullet4 = m_Player.FindAction("SwitchBullet4", throwIfNotFound: true);
-        m_Player_SwitchBullet5 = m_Player.FindAction("SwitchBullet5", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -248,7 +227,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchBullet2;
     private readonly InputAction m_Player_SwitchBullet3;
     private readonly InputAction m_Player_SwitchBullet4;
-    private readonly InputAction m_Player_SwitchBullet5;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -259,7 +237,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @SwitchBullet2 => m_Wrapper.m_Player_SwitchBullet2;
         public InputAction @SwitchBullet3 => m_Wrapper.m_Player_SwitchBullet3;
         public InputAction @SwitchBullet4 => m_Wrapper.m_Player_SwitchBullet4;
-        public InputAction @SwitchBullet5 => m_Wrapper.m_Player_SwitchBullet5;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -287,9 +264,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @SwitchBullet4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchBullet4;
                 @SwitchBullet4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchBullet4;
                 @SwitchBullet4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchBullet4;
-                @SwitchBullet5.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchBullet5;
-                @SwitchBullet5.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchBullet5;
-                @SwitchBullet5.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchBullet5;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -312,9 +286,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @SwitchBullet4.started += instance.OnSwitchBullet4;
                 @SwitchBullet4.performed += instance.OnSwitchBullet4;
                 @SwitchBullet4.canceled += instance.OnSwitchBullet4;
-                @SwitchBullet5.started += instance.OnSwitchBullet5;
-                @SwitchBullet5.performed += instance.OnSwitchBullet5;
-                @SwitchBullet5.canceled += instance.OnSwitchBullet5;
             }
         }
     }
@@ -327,6 +298,5 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnSwitchBullet2(InputAction.CallbackContext context);
         void OnSwitchBullet3(InputAction.CallbackContext context);
         void OnSwitchBullet4(InputAction.CallbackContext context);
-        void OnSwitchBullet5(InputAction.CallbackContext context);
     }
 }

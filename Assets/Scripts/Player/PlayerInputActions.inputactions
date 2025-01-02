@@ -58,15 +58,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "SwitchBullet5",
-                    "type": "Button",
-                    "id": "508ea89f-5af8-4c34-aced-41ca16f06ba1",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -133,17 +124,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "SwitchBullet4",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7ea7d0d3-06bc-40b0-aed2-272c1dae7aa1",
-                    "path": "<Keyboard>/5",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SwitchBullet5",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

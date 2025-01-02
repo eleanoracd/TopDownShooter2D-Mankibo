@@ -1,59 +1,44 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerVisual : MonoBehaviour
 {
-    private Animator animator;
-    private int currentDirection = 0;
+    [SerializeField] private Animator animator; 
+    [SerializeField] private Transform visual;
+    private const string IdleAnimation = "Idle";
+    private const string AttackAnimation = "Attack";
 
-    private void Awake()
+    private static readonly int AttackHash = Animator.StringToHash(AttackAnimation);
+
+    public void RotateVisual(Vector2 lookDirection)
     {
-        animator = GetComponent<Animator>();
+        // Calculate angle from direction and apply rotation to the visual object
+        float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg - 90;
+        visual.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public void UpdateDirection(Vector2 lookDirection)
+    public void PlayIdleAnimation()
     {
-        int newDirection = DetermineDirection(lookDirection);
-
-        if (newDirection != currentDirection)
+        if (animator != null)
         {
-            currentDirection = newDirection;
-            animator.SetInteger("Direction", currentDirection);
-        }
-
-        FlipSprite(lookDirection);
-    }
-
-    public void TriggerAttack()
-    {
-        animator.SetTrigger("Attack");
-    }
-
-    private int DetermineDirection(Vector2 lookDirection)
-    {
-        if (Mathf.Abs(lookDirection.x) > Mathf.Abs(lookDirection.y))
-        {
-            return 2;
-        }
-        else
-        {
-            return lookDirection.y > 0 ? 1 : 0;
+            animator.Play(IdleAnimation);
         }
     }
 
-    private void FlipSprite(Vector2 lookDirection)
+    public void PlayAttackAnimation()
     {
-        if (currentDirection == 2) // Side direction
+        if (animator != null)
         {
-            Vector3 scale = transform.localScale;
-            scale.x = lookDirection.x > 0 ? 1 : -1; // Flip horizontally for right-facing
-            transform.localScale = scale;
-        }
-        else
-        {
-            // Reset flip for Up and Down
-            Vector3 scale = transform.localScale;
-            scale.x = 1;
-            transform.localScale = scale;
+            animator.SetTrigger(AttackHash);
         }
     }
-}
+
+    public bool IsAttacking()
+    {
+        if (animator == null) return false;
+
+        // Use GetCurrentAnimatorStateInfo and check if the current animation state is Attack
+        return animator.GetCurrentAnimatorStateInfo(0).IsName(AttackAnimation);
+    }
+}   

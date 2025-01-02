@@ -9,32 +9,46 @@ public class BulletManager : MonoBehaviour
     [SerializeField] private GameObject laserBulletPrefab;
     [SerializeField] private GameObject explosiveBulletPrefab;
     [SerializeField] private GameObject poisonBulletPrefab;
-    [SerializeField] private GameObject missileBulletPrefab;
+    [SerializeField] private Sprite laserBulletPlaceholderSprite; // Placeholder for bullets without a sprite renderer
 
     private BulletType currentBulletType = BulletType.Basic;
     private float nextFireTime = 0f;
 
     private void OnEnable()
     {
+        if (InputManager.Instance == null)
+        {
+            Debug.LogError("InputManager.Instance is null. Ensure InputManager is initialized before BulletManager.");
+            return;
+        }
+
         InputManager.Instance.OnSwitchBullet += SwitchBullet;
         InputManager.Instance.OnShoot += Shoot;
     }
 
     private void OnDisable()
     {
+        if (InputManager.Instance == null) return;
+
         InputManager.Instance.OnSwitchBullet -= SwitchBullet;
         InputManager.Instance.OnShoot -= Shoot;
     }
 
-    private void SwitchBullet(int bulletIndex)
+    public void SwitchBullet(int bulletIndex)
     {
         currentBulletType = (BulletType)(bulletIndex - 1);
         Debug.Log($"Switched to {currentBulletType} Bullet");
     }
 
-    private void Shoot()
+    public void Shoot()
     {
         if (Time.time < nextFireTime) return;
+
+        if (firePoint == null)
+        {
+            Debug.LogError("FirePoint is not assigned!");
+            return;
+        }
 
         GameObject bulletPrefab = GetBulletPrefab();
         if (bulletPrefab == null) return;
@@ -49,12 +63,52 @@ public class BulletManager : MonoBehaviour
     {
         return currentBulletType switch
         {
+            BulletType.Basic => basicBulletPrefab ?? LogPrefabError(BulletType.Basic),
+            BulletType.Laser => laserBulletPrefab ?? LogPrefabError(BulletType.Laser),
+            BulletType.Explosive => explosiveBulletPrefab ?? LogPrefabError(BulletType.Explosive),
+            BulletType.Poison => poisonBulletPrefab ?? LogPrefabError(BulletType.Poison),
+            _ => null,
+        };
+    }
+
+    private GameObject LogPrefabError(BulletType bulletType)
+    {
+        Debug.LogError($"Prefab for {bulletType} is not assigned in the BulletManager.");
+        return null;
+    }
+
+    public Sprite GetBulletSprite(BulletType bulletType)
+    {
+        GameObject bulletPrefab = bulletType switch
+        {
             BulletType.Basic => basicBulletPrefab,
             BulletType.Laser => laserBulletPrefab,
             BulletType.Explosive => explosiveBulletPrefab,
             BulletType.Poison => poisonBulletPrefab,
-            BulletType.Missile => missileBulletPrefab,
             _ => null,
         };
+
+        if (bulletPrefab == null)
+        {
+            Debug.LogWarning($"No prefab found for {bulletType} bullet!");
+            return null; // Return null or a placeholder sprite
+        }
+
+        SpriteRenderer spriteRenderer = bulletPrefab.GetComponent<SpriteRenderer>();
+
+        if (spriteRenderer != null)
+        {
+            return spriteRenderer.sprite;
+        }
+
+        if (bulletType == BulletType.Laser)
+        {
+            return laserBulletPlaceholderSprite; // Placeholder for Laser Bullet
+        }
+
+        Debug.LogWarning($"No SpriteRenderer found for {bulletType} bullet!");
+        return null;
     }
+
+    public BulletType GetCurrentBulletType() => currentBulletType;
 }
